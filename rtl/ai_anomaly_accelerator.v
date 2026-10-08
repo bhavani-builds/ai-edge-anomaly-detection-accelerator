@@ -26,12 +26,15 @@ module ai_anomaly_accelerator #(
     output wire anomaly,
 
     output wire busy,
-    output wire done
+    output wire done,
+
+    output wire [31:0] inference_latency,
+    output wire latency_valid
 );
 
 
     // ------------------------------------------------
-    // Control signals
+    // Controller signals
     // ------------------------------------------------
 
     wire feature_enable;
@@ -159,7 +162,6 @@ module ai_anomaly_accelerator #(
 
         .clk(clk),
         .reset(reset),
-
         .start(start),
 
         .feature_valid(feature_valid),
@@ -174,6 +176,26 @@ module ai_anomaly_accelerator #(
 
         .busy(busy),
         .done(done)
+    );
+
+
+    // ------------------------------------------------
+    // Performance Monitor
+    // ------------------------------------------------
+
+    performance_monitor #(
+        .COUNTER_WIDTH(32)
+    ) monitor (
+
+        .clk(clk),
+        .reset(reset),
+
+        .start(start),
+        .done(done),
+
+        .cycle_count(),
+        .latency(inference_latency),
+        .valid(latency_valid)
     );
 
 
