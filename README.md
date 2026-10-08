@@ -867,6 +867,4 @@ FPGA
 Embedded Systems
 ```
 
----
 
-## ⭐ If
